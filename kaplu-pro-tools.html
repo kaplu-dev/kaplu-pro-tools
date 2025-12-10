@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Kaplu Pro Tools</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root{
+      --bg-light: linear-gradient(to bottom,#a8edea,#fed6e3);
+      --bg-dark: #020617;
+      --card-light:#ffffff;
+      --card-dark:#0f172a;
+      --text-main-light:#111827;
+      --text-main-dark:#e5e7eb;
+      --text-sub-light:#4b5563;
+      --text-sub-dark:#a1a1aa;
+      --accent:#2563eb;
+    }
+    *{box-sizing:border-box;}
+
+    body{
+      margin:0;
+      font-family:Arial, sans-serif;
+      background:var(--bg-light);
+      transition:background 0.3s;
+      padding:10px 0;
+    }
+    body.dark{
+      background:var(--bg-dark);
+    }
+
+    .topbar{
+      padding:12px 16px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+    .logo{
+      font-weight:bold;
+      font-size:17px;
+      color:var(--text-main-light);
+    }
+    body.dark .logo{color:var(--text-main-dark);}
+    .tag{
+      font-size:11px;
+      color:var(--text-sub-light);
+    }
+    body.dark .tag{color:var(--text-sub-dark);}
+    .made-by{
+      font-size:11px;
+      color:var(--text-sub-light);
+    }
+    body.dark .made-by{color:var(--text-sub-dark);}
+
+    .mode-btn{
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid #94a3b8;
+      background:#ffffffaa;
+      font-size:11px;
+      cursor:pointer;
+      margin-left:8px;
+    }
+    body.dark .mode-btn{
+      background:#020617;
+      color:var(--text-main-dark);
+      border-color:#475569;
+    }
+
+    .wrapper{
+      width:100%;
+      max-width:480px;
+      margin:0 auto 30px auto;
+      padding:0 12px 24px 12px;
+    }
+    .hero{
+      background:rgba(255,255,255,0.96);
+      border-radius:18px;
+      padding:14px;
+      box-shadow:0 8px 22px rgba(15,23,42,0.25);
+      margin-bottom:16px;
+    }
+    body.dark .hero{
+      background:#020617;
+      box-shadow:0 8px 22px rgba(0,0,0,0.7);
+    }
+    .hero h1{
+      margin:0;
+      font-size:20px;
+      color:var(--text-main-light);
+    }
+    body.dark .hero h1{color:var(--text-main-dark);}
+    .hero p{
+      margin:4px 0 0 0;
+      font-size:13px;
+      color:var(--text-sub-light);
+    }
+    body.dark .hero p{color:var(--text-sub-dark);}
+
+    .tabs{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:12px;
+    }
+    .tab-btn{
+      flex:1 1 45%;
+      min-width:130px;
+      border:none;
+      border-radius:999px;
+      padding:10px 12px;
+      font-size:14px;
+      font-weight:bold;
+      cursor:pointer;
+      background:#e5e7eb;
+      color:#111827;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+    }
+    body.dark .tab-btn{
+      background:#0f172a;
+      color:var(--text-main-dark);
+    }
+    .tab-btn span.emoji{font-size:18px;}
+    .tab-btn.active{
+      background:var(--accent);
+      color:#ffffff;
+    }
+
+    .tool-card{
+      margin-top:14px;
+      background:var(--card-light);
+      border-radius:18px;
+      padding:16px 14px 18px 14px;
+      box-shadow:0 6px 18px rgba(15,23,42,0.18);
+    }
+    body.dark .tool-card{
+      background:var(--card-dark);
+      box-shadow:0 6px 18px rgba(0,0,0,0.9);
+    }
+    .tool-card h2{
+      margin:0 0 6px 0;
+      font-size:18px;
+      color:var(--text-main-light);
+    }
+    body.dark .tool-card h2{color:var(--text-main-dark);}
+    .tool-card p{
+      margin:3px 0;
+      font-size:13px;
+      color:var(--text-sub-light);
+    }
+    body.dark .tool-card p{color:var(--text-sub-dark);}
+
+    label{
+      display:block;
+      margin-top:10px;
+      margin-bottom:4px;
+      font-size:14px;
+      color:var(--text-main-light);
+    }
+    body.dark label{color:var(--text-main-dark);}
+
+    input, textarea, select{
+      width:100%;
+      padding:10px;
+      border-radius:10px;
+      border:1px solid #cbd5e1;
+      font-size:14px;
+      background:#f9fafb;
+    }
+    body.dark input,
+    body.dark select,
+    body.dark textarea{
+      background:#020617;
+      color:var(--text-main-dark);
+      border-color:#475569;
+    }
+
+    .btn-main,.btn-secondary{
+      width:100%;
+      padding:14px;
+      border-radius:12px;
+      border:none;
+      font-size:17px;
+      font-weight:bold;
+      cursor:pointer;
+      margin-top:12px;
+    }
+    .btn-main{
+      background:#22c55e;
+      color:#ffffff;
+    }
+    .btn-main:hover{background:#16a34a;}
+    .btn-secondary{
+      background:#e11d48;
+      color:#ffffff;
+    }
+    .btn-secondary:hover{background:#be123c;}
+
+    .btn-small{
+      padding:10px;
+      border-radius:10px;
+      border:none;
+      font-size:13px;
+      font-weight:bold;
+      cursor:pointer;
+    }
+    .btn-small.blue{background:#2563eb;color:#fff;}
+    .btn-small.gray{background:#e5e7eb;color:#111827;}
+    body.dark .btn-small.gray{background:#111827;color:#e5e7eb;}
+
+    .result-box{
+      display:none;
+      margin-top:14px;
+      background:#f1f5f9;
+      border-radius:14px;
+      padding:16px;
+      font-size:16px;
+      line-height:1.6;
+      color:#111827;
+    }
+    body.dark .result-box{
+      background:#020617;
+      color:#e5e7eb;
+    }
+    .result-box b{font-size:17px;}
+
+    .section{display:none;}
+    .section.active{display:block;}
+
+    .small{
+      margin-top:10px;
+      text-align:center;
+      font-size:11px;
+      color:#6b7280;
+    }
+    body.dark .small{color:#9ca3af;}
+
+    /* Calendar */
+    .calendar-controls{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-top:8px;
+      margin-bottom:6px;
+    }
+    .calendar-title{
+      font-weight:bold;
+      font-size:15px;
+      color:var(--text-main-light);
+    }
+    body.dark .calendar-title{color:var(--text-main-dark);}
+    .cal-grid{
+      display:grid;
+      grid-template-columns:repeat(7,1fr);
+      gap:4px;
+      font-size:13px;
+      text-align:center;
+    }
+    .cal-header{
+      font-weight:bold;
+      color:#6b7280;
+    }
+    body.dark .cal-header{color:#9ca3af;}
+    .cal-cell{
+      padding:6px 0;
+      border-radius:8px;
+      background:#eef2ff;
+      color:#111827;
+    }
+    .cal-today{
+      background:#22c55e;
+      color:#ffffff;
+      font-weight:bold;
+    }
+    body.dark .cal-cell{
+      background:#020617;
+      color:#e5e7eb;
+      border:1px solid #1e293b;
+    }
+
+    /* Notes */
+    .notes-input-row{
+      display:flex;
+      gap:6px;
+      margin-top:8px;
+    }
+    .notes-input-row input{flex:1;}
+    .note-list{
+      margin-top:10px;
+      list-style:none;
+      padding:0;
+    }
+    .note-item{
+      background:#f1f5f9;
+      border-radius:12px;
+      padding:8px 10px;
+      margin-bottom:6px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size:14px;
+    }
+    body.dark .note-item{
+      background:#020617;
+      color:#e5e7eb;
+      border:1px solid #1f2937;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div>
+      <div class="logo">⚙️ Kaplu Pro Tools</div>
+      <div class="tag">Age • BMI • Calendar • Notes • Unit • Dictionary</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:4px;">
+      <span class="made-by">Made by Kaplu</span>
+      <button class="mode-btn" id="modeBtn" onclick="toggleMode()">🌙 Dark</button>
+    </div>
+  </div>
+
+  <div class="wrapper">
+    <div class="hero">
+      <h1>Welcome, Kaplu!</h1>
+      <p>
+        Ye ek hi page par multiple useful tools ka set hai –
+        age calculator, health BMI, calendar, notes, unit converter aur chhota dictionary sab yahin se use kar sakte ho.
+      </p>
+      <div class="tabs">
+        <button class="tab-btn active" data-target="ageSec"><span class="emoji">🧮</span>Age</button>
+        <button class="tab-btn" data-target="bmiSec"><span class="emoji">⚖️</span>BMI</button>
+        <button class="tab-btn" data-target="calSec"><span class="emoji">📅</span>Calendar</button>
+        <button class="tab-btn" data-target="notesSec"><span class="emoji">📝</span>Notes</button>
+        <button class="tab-btn" data-target="unitSec"><span class="emoji">🔁</span>Unit</button>
+        <button class="tab-btn" data-target="dictSec"><span class="emoji">📚</span>Dict</button>
+      </div>
+    </div>
+
+    <!-- AGE SECTION -->
+    <div id="ageSec" class="section active">
+      <div class="tool-card">
+        <h2>🧮 Age Calculator</h2>
+        <p>Apni date of birth daalo, age + category + next birthday sab dekho.</p>
+
+        <label for="dob">Date of Birth</label>
+        <input type="date" id="dob">
+
+        <button class="btn-main" onclick="calculateAge()">Calculate Age</button>
+        <button class="btn-secondary" onclick="resetAge()">Reset</button>
+
+        <div id="ageResult" class="result-box"></div>
+      </div>
+    </div>
+
+    <!-- BMI SECTION -->
+    <div id="bmiSec" class="section">
+      <div class="tool-card">
+        <h2>⚖️ BMI / Health Calculator</h2>
+        <p>Weight aur height daal kar apna BMI aur health status dekho.</p>
+
+        <label for="weight">Weight (kg)</label>
+        <input type="number" id="weight" placeholder="Jaise: 55">
+
+        <label for="height">Height (cm)</label>
+        <input type="number" id="height" placeholder="Jaise: 160">
+
+        <button class="btn-main" onclick="calcBMI()">Calculate BMI</button>
+        <button class="btn-secondary" onclick="resetBMI()">Reset</button>
+
+        <div id="bmiResult" class="result-box"></div>
+      </div>
+    </div>
+
+    <!-- CALENDAR SECTION -->
+    <div id="calSec" class="section">
+      <div class="tool-card">
+        <h2>📅 Simple Calendar</h2>
+      <p>Aaj ka month dekho, previous/next month me jao.</p>
+
+        <div class="calendar-controls">
+          <button class="btn-small gray" onclick="changeMonth(-1)">◀ Prev</button>
+          <div class="calendar-title" id="calTitle"></div>
+          <button class="btn-small blue" onclick="changeMonth(1)">Next ▶</button>
+        </div>
+
+        <div class="cal-grid" id="calendarGrid"></div>
+
+        <div class="small">School ka kaam ya dates dekhne ke लिए simple calendar.</div>
+      </div>
+    </div>
+
+    <!-- NOTES SECTION -->
+    <div id="notesSec" class="section">
+      <div class="tool-card">
+        <h2>📝 Notes / To-Do</h2>
+        <p>Daily काम, homework, ya याद रखने वाली चीजें yahan likho.</p>
+
+        <div class="notes-input-row">
+          <input type="text" id="noteInput" placeholder="Jaise: Maths 1 ghanta, English 30 min">
+          <button class="btn-small blue" onclick="addNote()">Add</button>
+        </div>
+
+        <ul id="noteList" class="note-list"></ul>
+
+        <div class="small">Notes browser ke local storage me save rahte hain (jab tak tum delete na karo).</div>
+      </div>
+    </div>
+
+    <!-- UNIT CONVERTER SECTION -->
+    <div id="unitSec" class="section">
+      <div class="tool-card">
+        <h2>🔁 Unit Converter</h2>
+        <p>Common conversions: length, weight, temperature, money.</p>
+
+        <label for="convType">Conversion Type</label>
+        <select id="convType">
+          <option value="km-m">Kilometer → Meter</option>
+          <option value="m-km">Meter → Kilometer</option>
+          <option value="kg-g">Kilogram → Gram</option>
+          <option value="g-kg">Gram → Kilogram</option>
+          <option value="c-f">Celsius → Fahrenheit</option>
+          <option value="f-c">Fahrenheit → Celsius</option>
+          <option value="inr-usd">Rupee → Dollar (approx)</option>
+          <option value="usd-inr">Dollar → Rupee (approx)</option>
+        </select>
+
+        <label for="convInput">Value</label>
+        <input type="number" id="convInput" placeholder="Number daalo">
+
+        <button class="btn-main" onclick="convertValue()">Convert</button>
+        <button class="btn-secondary" onclick="resetConv()">Reset</button>
+
+        <div id="convResult" class="result-box"></div>
+      </div>
+    </div>
+
+    <!-- DICTIONARY SECTION -->
+    <div id="dictSec" class="section">
+      <div class="tool-card">
+        <h2>📚 Simple Dictionary</h2>
+        <p>Common English words ka simple meaning dekh sakte ho.</p>
+
+        <label for="wordInput">Word</label>
+        <input type="text" id="wordInput" placeholder="Jaise: honest, brave, beautiful">
+
+        <button class="btn-main" onclick="searchWord()">Search Meaning</button>
+        <button class="btn-secondary" onclick="resetDict()">Reset</button>
+
+        <div id="dictResult" class="result-box"></div>
+
+        <div class="small">Ye chhota offline dictionary hai – sirf कुछ common words ke लिए.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // TAB SWITCHING
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const sections = {
+      ageSec: document.getElementById('ageSec'),
+      bmiSec: document.getElementById('bmiSec'),
+      calSec: document.getElementById('calSec'),
+      notesSec: document.getElementById('notesSec'),
+      unitSec: document.getElementById('unitSec'),
+      dictSec: document.getElementById('dictSec')
+    };
+
+    tabButtons.forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        tabButtons.forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        const target = btn.getAttribute('data-target');
+        Object.keys(sections).forEach(id=>sections[id].classList.remove('active'));
+        sections[target].classList.add('active');
+      });
+    });
+
+    // DARK MODE
+    function toggleMode(){
+      document.body.classList.toggle('dark');
+      const b = document.getElementById('modeBtn');
+      if(document.body.classList.contains('dark')){
+        b.textContent = "☀️ Light";
+      }else{
+        b.textContent = "🌙 Dark";
+      }
+    }
+
+    // AGE CALCULATOR
+    function calculateAge(){
+      const dobValue = document.getElementById('dob').value;
+      const box = document.getElementById('ageResult');
+
+      if(!dobValue){
+        alert("Pehle DOB select karo 🙂");
+        return;
+      }
+      const dob = new Date(dobValue);
+      const today = new Date();
+      if(dob > today){
+        alert("Future date mat daalo 😄");
+        return;
+      }
+
+      let years = today.getFullYear() - dob.getFullYear();
+      let months = today.getMonth() - dob.getMonth();
+      let days = today.getDate() - dob.getDate();
+
+      if(days < 0){
+        months--;
+        const prevMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+        days += prevMonth.getDate();
+      }
+      if(months < 0){
+        years--;
+        months += 12;
+      }
+
+      const diffMs = today - dob;
+      const totalDays = Math.floor(diffMs/(1000*60*60*24));
+      const totalMonths = years*12 + months;
+
+      const dayNames = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+      const birthDay = dayNames[dob.getDay()];
+
+      let category="";
+      if(years < 13) category="Child";
+      else if(years < 20) category="Teenager";
+      else if(years < 36) category="Young Adult";
+      else if(years < 61) category="Adult";
+      else category="Senior Citizen";
+
+      let nextB = new Date(today.getFullYear(),dob.getMonth(),dob.getDate());
+      if(nextB < today){ nextB.setFullYear(nextB.getFullYear()+1); }
+      const diffB = nextB - today;
+      const daysToBday = Math.ceil(diffB/(1000*60*60*24));
+      const bdayStr = nextB.getDate()+"-"+(nextB.getMonth()+1)+"-"+nextB.getFullYear();
+
+      box.style.display="block";
+      box.innerHTML =
+        "<b>Exact Age:</b> "+years+" years, "+months+" months, "+days+" days<br>"+
+        "<b>Category:</b> "+category+"<br>"+
+        "<b>Total Days:</b> "+totalDays+"<br>"+
+        "<b>Total Months:</b> "+totalMonths+"<br>"+
+        "<b>Born on:</b> "+birthDay+"<br>"+
+        "<b>Next Birthday:</b> "+bdayStr+" ("+daysToBday+" days left)";
+    }
+    function resetAge(){
+      document.getElementById('dob').value="";
+      const box = document.getElementById('ageResult');
+      box.style.display="none";
+      box.innerHTML="";
+    }
+
+    // BMI
+    function calcBMI(){
+      const w = parseFloat(document.getElementById('weight').value);
+      const hcm = parseFloat(document.getElementById('height').value);
+      const box = document.getElementById('bmiResult');
+
+      if(!w || !hcm || w<=0 || hcm<=0){
+        alert("Weight aur height theek se daalo 🙂");
+        return;
+      }
+      const h = hcm/100;
+      const bmi = w/(h*h);
+      const bmiRounded = bmi.toFixed(1);
+
+      let status="", advice="";
+      if(bmi < 18.5){
+        status="Underweight";
+        advice="Thoda अच्छा खाना + doctor ki सलाह useful rahegi.";
+      }else if(bmi < 25){
+        status="Normal";
+        advice="Bahut accha! Healthy diet + हल्का exercise continue rakho.";
+      }else if(bmi < 30){
+        status="Overweight";
+        advice="Walking / exercise aur light diet se help milegi.";
+      }else{
+        status="Obese";
+        advice="Doctor se personal सलाह lena sabse अच्छा.";
+      }
+
+      box.style.display="block";
+      box.innerHTML =
+        "<b>BMI:</b> "+bmiRounded+"<br>"+
+        "<b>Status:</b> "+status+"<br>"+
+        "<b>Advice:</b> "+advice;
+    }
+    function resetBMI(){
+      document.getElementById('weight').value="";
+      document.getElementById('height').value="";
+      const box = document.getElementById('bmiResult');
+      box.style.display="none";
+      box.innerHTML="";
+    }
+
+    // CALENDAR
+    let currentMonth, currentYear;
+    const calTitle = document.getElementById('calTitle');
+    const calGrid = document.getElementById('calendarGrid');
+
+    function initCalendar(){
+      const today = new Date();
+      currentMonth = today.getMonth();
+      currentYear = today.getFullYear();
+      renderCalendar();
+    }
+    function renderCalendar(){
+      const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+      calTitle.textContent = months[currentMonth]+" "+currentYear;
+
+      calGrid.innerHTML = "";
+      const dayNames = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+      dayNames.forEach(d=>{
+        const h = document.createElement('div');
+        h.textContent = d;
+        h.className = "cal-header";
+        calGrid.appendChild(h);
+      });
+
+      const firstDay = new Date(currentYear,currentMonth,1).getDay();
+      const daysInMonth = new Date(currentYear,currentMonth+1,0).getDate();
+      const today = new Date();
+      const isThisMonth = (today.getFullYear()===currentYear && today.getMonth()===currentMonth);
+
+      for(let i=0;i<firstDay;i++){
+        const empty = document.createElement('div');
+        calGrid.appendChild(empty);
+      }
+      for(let d=1; d<=daysInMonth; d++){
+        const cell = document.createElement('div');
+        cell.textContent = d;
+        cell.className = "cal-cell";
+        if(isThisMonth && d===today.getDate()){
+          cell.classList.add("cal-today");
+        }
+        calGrid.appendChild(cell);
+      }
+    }
+    function changeMonth(offset){
+      currentMonth += offset;
+      if(currentMonth<0){currentMonth=11;currentYear--;}
+      else if(currentMonth>11){currentMonth=0;currentYear++;}
+      renderCalendar();
+    }
+
+    // NOTES
+    const noteListEl = document.getElementById('noteList');
+    const noteInputEl = document.getElementById('noteInput');
+
+    function loadNotes(){
+      const stored = localStorage.getItem('kaplu_notes');
+      if(!stored) return;
+      const notes = JSON.parse(stored);
+      notes.forEach(text=>addNoteToDOM(text));
+    }
+    function saveNotes(){
+      const items = document.querySelectorAll('.note-item span');
+      const arr = [];
+      items.forEach(el=>arr.push(el.textContent));
+      localStorage.setItem('kaplu_notes', JSON.stringify(arr));
+    }
+    function addNote(){
+      const text = noteInputEl.value.trim();
+      if(!text){
+        alert("Pehle note likho 🙂");
+        return;
+      }
+      addNoteToDOM(text);
+      noteInputEl.value="";
+      saveNotes();
+    }
+    function addNoteToDOM(text){
+      const li = document.createElement('li');
+      li.className="note-item";
+      const span = document.createElement('span');
+      span.textContent = text;
+      const btn = document.createElement('button');
+      btn.textContent="Delete";
+      btn.className="btn-small gray";
+      btn.style.fontSize="12px";
+      btn.onclick=function(){li.remove();saveNotes();};
+      li.appendChild(span);
+      li.appendChild(btn);
+      noteListEl.appendChild(li);
+    }
+
+    // UNIT CONVERTER
+    function convertValue(){
+      const type = document.getElementById('convType').value;
+      const val = parseFloat(document.getElementById('convInput').value);
+      const box = document.getElementById('convResult');
+
+      if(!val && val!==0){
+        alert("Pehle koi value daalo 🙂");
+        return;
+      }
+      let out = "", unit="";
+      switch(type){
+        case "km-m": out = val*1000; unit="meters"; break;
+        case "m-km": out = val/1000; unit="kilometers"; break;
+        case "kg-g": out = val*1000; unit="grams"; break;
+        case "g-kg": out = val/1000; unit="kilograms"; break;
+        case "c-f":  out = (val*9/5)+32; unit="°F"; break;
+        case "f-c":  out = (val-32)*5/9; unit="°C"; break;
+        case "inr-usd": out = val*0.012; unit="USD (approx)"; break;
+        case "usd-inr": out = val*84; unit="INR (approx)"; break;
+      }
+      box.style.display="block";
+      box.innerHTML = "<b>Result:</b> "+out.toFixed(3)+" "+unit;
+    }
+    function resetConv(){
+      document.getElementById('convInput').value="";
+      const box = document.getElementById('convResult');
+      box.style.display="none";
+      box.innerHTML="";
+    }
+
+    // DICTIONARY
+    const dict = {
+      "honest":"इमानदार (jo jhoot nahi bolta)",
+      "brave":"बहादुर, डर ke बिना mushkil ka सामना karne wala",
+      "beautiful":"सुन्दर, dekhne me achcha",
+      "smart":"समझदार aur तेज, jo jaldi सीखता hai",
+      "kind":"दयालु, doosron ki help karne wala",
+      "strong":"मज़बूत, physically ya mentally powerful",
+      "hardworking":"मेहनती, jo lagataar mehnat karta hai",
+      "friend":"दोस्त, jo साथ देता hai",
+      "teacher":"शिक्षक, jo padhata hai",
+      "student":"विद्यार्थी, jo seekh raha hai",
+      "family":"परिवार, ghar wale log",
+      "future":"भविष्य, aane wala samay"
+    };
+
+    function searchWord(){
+      const input = document.getElementById('wordInput').value.trim().toLowerCase();
+      const box = document.getElementById('dictResult');
+      if(!input){
+        alert("Pehle koi word likho 🙂");
+        return;
+      }
+      const meaning = dict[input];
+      box.style.display="block";
+      if(meaning){
+        box.innerHTML = "<b>"+input+"</b><br>"+meaning;
+      }else{
+        box.innerHTML = "Sorry, ye word is chhote dictionary me save nahi hai. Common words try karo 🙂";
+      }
+    }
+    function resetDict(){
+      document.getElementById('wordInput').value="";
+      const box = document.getElementById('dictResult');
+      box.style.display="none";
+      box.innerHTML="";
+    }
+
+    // INIT
+    initCalendar();
+    loadNotes();
+  </script>
+
+</body>
+</html>
